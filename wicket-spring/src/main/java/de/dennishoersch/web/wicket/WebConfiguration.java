@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.dennishoersch.web.wicket;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @author hoersch
  * 
  */
 @Configuration
-@EnableWebMvc
 @ComponentScan(basePackages = "de.dennishoersch.web")
 public class WebConfiguration {
 
-    @Bean
-    public WebApplication webApplication() {
-        return new HelloWorldApplication();
-    }
+	@Bean
+	public WebApplication webApplication() {
+		return new HelloWorldApplication();
+	}
 
-    @Bean
-    public MessageHolder messageHolder() {
-        return new MessageHolder("SPRING");
-    }
+	@Bean
+	public MessageHolder messageHolder() {
+		return new MessageHolderImpl("SPRING");
+	}
 }
