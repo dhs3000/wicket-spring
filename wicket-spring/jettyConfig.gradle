@@ -1,0 +1,6 @@
+apply plugin: 'jetty'
+
+[jettyRun,jettyRunWar]*.with {
+	httpPort = 8081
+	scanIntervalSeconds = 1
+}
