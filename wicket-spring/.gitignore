@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /target/*
 /logs/*
 /bin/*
@@ -7,3 +8,7 @@
 .project
 /.settings/*
 gradle.properties
+=======
+/.gradle
+/libs
+>>>>>>> 458e621f07ba37b17037259f21f347e2c848250f

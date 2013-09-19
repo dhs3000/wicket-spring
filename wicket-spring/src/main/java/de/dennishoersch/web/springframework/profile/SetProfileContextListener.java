@@ -15,12 +15,12 @@
  */
 package de.dennishoersch.web.springframework.profile;
 
-import java.util.Arrays;
-
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
+
+import de.dennishoersch.util.inspection.InstanceCollector;
 
 /**
  * 
@@ -43,8 +43,8 @@ public class SetProfileContextListener implements ApplicationContextInitializer<
 	}
 
 	private Iterable<Profile> allProfiles() {
-		// Read from classpath?
-		return Arrays.<Profile> asList(Profiles.DEVELOPMENT);
+		InstanceCollector<Profile> instanceCollector = new InstanceCollector<>(Profile.class, "");
+		return instanceCollector.instances();
 	}
 
 	private void addProfiles(ConfigurableWebApplicationContext applicationContext, Iterable<Profile> profiles) {
