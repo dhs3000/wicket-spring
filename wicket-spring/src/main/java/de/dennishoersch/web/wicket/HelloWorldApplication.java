@@ -13,35 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.dennishoersch.web.wicket;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 
-import de.dennishoersch.web.springframework.wicket.SimpleSpringComponentInjector;
-import de.dennishoersch.web.wicket.pages.Hello;
+import de.dennishoersch.web.wicket.pages.HelloPage;
 
 /**
  * @author hoersch
  * 
  */
 public class HelloWorldApplication extends WebApplication {
-    // @Autowired
-    // um das zu benutzen einen eigenen injector?
-    // @Inject von javax.inject funktioniert!
 
-    @Override
-    protected void init() {
-        super.init();
-        // getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+	@Override
+	protected void init() {
+		super.init();
 
-        getComponentInstantiationListeners().add(new SimpleSpringComponentInjector(getServletContext()));
-    }
+		getMarkupSettings().setDefaultMarkupEncoding("utf-8");
+		getRequestCycleSettings().setResponseRequestEncoding("utf-8");
+		getMarkupSettings().setCompressWhitespace(true);
 
-    @Override
-    public Class<? extends Page> getHomePage() {
-        return Hello.class;
-    }
+		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+		// getComponentInstantiationListeners().add(new SimpleSpringComponentInjector(getServletContext()));
+	}
+
+	@Override
+	public Class<? extends Page> getHomePage() {
+		return HelloPage.class;
+	}
 
 }
