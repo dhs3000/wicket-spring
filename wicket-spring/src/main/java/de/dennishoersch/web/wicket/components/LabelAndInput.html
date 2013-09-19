@@ -1,0 +1,28 @@
+<html>
+<!-- 
+<wicket:head>
+    <wicket:link>
+        <script src="prototype.js" type="text/javascript"></script>
+    </wicket:link>
+</wicket:head>
+ -->
+
+<body>
+
+    <wicket:panel>
+
+    <!-- 
+        TODO: error class setzen an input oder zeile?
+        TODO: (html5-) Type für input?
+     -->
+
+        <div wicket:id="labelAndInputContainer" class="">
+            <label wicket:for="input"><wicket:label></wicket:label>:</label>
+            <input wicket:id="input" type="text"/>
+            <input type="button" wicket:id="helptextButton" class="labelAndInput-helptextButton" />
+        </div>
+
+    </wicket:panel>
+
+</body>
+</html>
