@@ -28,49 +28,55 @@ import org.springframework.web.context.ConfigurableWebApplicationContext;
  */
 public class SetProfileContextListener implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    private final Logger logger = Logger.getLogger(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 
-    @Override
-    public void initialize(ConfigurableApplicationContext applicationContext) {
+	@Override
+	public void initialize(ConfigurableApplicationContext applicationContext) {
 
-        if (!(applicationContext instanceof ConfigurableWebApplicationContext)) {
-            logger.error("ApplicationContext is no WebApplicationContext! (" + applicationContext.getClass() + ")");
-            return;
-        }
+		if (!(applicationContext instanceof ConfigurableWebApplicationContext)) {
+			logger.error("ApplicationContext is no WebApplicationContext! (" + applicationContext.getClass() + ")");
+			return;
+		}
 
-        addProfiles((ConfigurableWebApplicationContext) applicationContext, allProfiles());
-        // applicationContext.getEnvironment().addActiveProfile("WEB");
-    }
+		addProfiles((ConfigurableWebApplicationContext) applicationContext, allProfiles());
+		// applicationContext.getEnvironment().addActiveProfile("WEB");
+	}
 
-    private Iterable<Profile> allProfiles() {
-        // Read from classpath?
-        return Arrays.<Profile> asList(Profiles.TOMCAT);
-    }
+	private Iterable<Profile> allProfiles() {
+		// Read from classpath?
+		return Arrays.<Profile> asList(Profiles.DEVELOPMENT);
+	}
 
-    private void addProfiles(ConfigurableWebApplicationContext applicationContext, Iterable<Profile> profiles) {
-        for (Profile profile : profiles) {
-            if (profile.isActive(applicationContext)) {
-                logger.debug(String.format("Profile '%s' is active.", profile.name()));
-                applicationContext.getEnvironment().addActiveProfile(profile.name());
-            }
-        }
-    }
+	private void addProfiles(ConfigurableWebApplicationContext applicationContext, Iterable<Profile> profiles) {
+		for (Profile profile : profiles) {
+			if (profile.isActive(applicationContext)) {
+				logger.debug(String.format("Profile '%s' is active.", profile.name()));
+				applicationContext.getEnvironment().addActiveProfile(profile.name());
+				profile.init();
+			}
+		}
+	}
 
-    /**
-     * Definition of a profile.
-     */
-    public interface Profile {
+	/**
+	 * Definition of a profile.
+	 */
+	public interface Profile {
 
-        /**
-         * @param applicationContext
-         * @return whether this profile is active
-         */
-        boolean isActive(ConfigurableWebApplicationContext applicationContext);
+		/**
+		 * @param applicationContext
+		 * @return whether this profile is active
+		 */
+		boolean isActive(ConfigurableWebApplicationContext applicationContext);
 
-        /**
-         * @return the name of this profile
-         */
-        String name();
+		/**
+		 * Hook to implement profile dependent initialization.
+		 */
+		void init();
 
-    }
+		/**
+		 * @return the name of this profile
+		 */
+		String name();
+
+	}
 }

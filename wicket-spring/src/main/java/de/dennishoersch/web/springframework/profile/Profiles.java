@@ -27,27 +27,84 @@ import org.springframework.web.context.ConfigurableWebApplicationContext;
  * @author hoersch
  */
 public enum Profiles implements de.dennishoersch.web.springframework.profile.SetProfileContextListener.Profile {
-    TOMCAT,
+	DEVELOPMENT {
+		@Override
+		public void init() {
+			System.setProperty("wicket.configuration", "development");
+		}
 
-    JETTY;
+		@Override
+		public boolean isActive(ConfigurableWebApplicationContext applicationContext) {
+			return !(QA.isActive(applicationContext) || PREVIEW.isActive(applicationContext) || PRODUCTION.isActive(applicationContext));
+		}
+	},
+	QA {
+		@Override
+		public void init() {
+			System.setProperty("wicket.configuration", "development");
+		}
 
-    @Override
-    public boolean isActive(ConfigurableWebApplicationContext applicationContext) {
-        String serverInfo = applicationContext.getServletContext().getServerInfo();
-        return serverInfo.toLowerCase().contains(name().toLowerCase());
-    }
+		@Override
+		public boolean isActive(ConfigurableWebApplicationContext applicationContext) {
+			// FIXME implement environment detection
+			return false;
+		}
+	},
+	PREVIEW {
+		@Override
+		public void init() {
+			System.setProperty("wicket.configuration", "deployment");
+		}
 
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @Profile("TOMCAT")
-    public @interface Tomcat {
-        //
-    }
+		@Override
+		public boolean isActive(ConfigurableWebApplicationContext applicationContext) {
+			// FIXME implement environment detection
+			return false;
+		}
+	},
+	PRODUCTION {
+		@Override
+		public void init() {
+			System.setProperty("wicket.configuration", "deployment");
+		}
 
-    @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
-    @Profile("JETTY")
-    public @interface Jetty {
-        //
-    }
+		@Override
+		public boolean isActive(ConfigurableWebApplicationContext applicationContext) {
+			// FIXME implement environment detection
+			return false;
+		}
+	};
+
+	@Override
+	public void init() {
+		//
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Profile("DEVELOPMENT")
+	public @interface Development {
+		//
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Profile("QA")
+	public @interface QA {
+		//
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Profile("PREVIEW")
+	public @interface Preview {
+		//
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Profile("PRODUCTION")
+	public @interface Production {
+		//
+	}
 }
