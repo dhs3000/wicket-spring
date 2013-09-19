@@ -1,0 +1,12 @@
+import org.gradle.plugins.ide.eclipse.model.SourceFolder
+
+apply plugin: 'eclipse'
+
+eclipse.classpath.file.whenMerged { cp ->
+	cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith(mainSrc) }*.output = mainOutCls
+	cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith(testSrc) }*.output = testOutCls
+	cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith(mainRes) }*.output = mainOutRes
+	cp.entries.findAll { it instanceof SourceFolder && it.path.startsWith(testRes) }*.output = testOutRes
+}
+
+eclipseClasspath.doFirst { file('.classpath').delete() }
