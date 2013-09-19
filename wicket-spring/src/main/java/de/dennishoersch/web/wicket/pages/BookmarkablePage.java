@@ -13,29 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.dennishoersch.web.wicket.pages;
 
-import javax.inject.Inject;
-
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
 
-import de.dennishoersch.web.wicket.MessageHolder;
+import com.google.common.base.Strings;
+
+import de.dennishoersch.web.wicket.util.Components;
 
 /**
  * @author hoersch
- * 
  */
-public class Hello extends WebPage {
+public class BookmarkablePage extends BasePage {
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
+	public BookmarkablePage(final PageParameters parameters) {
+		add(createLabel("parameter", parameters));
+	}
 
-    @Inject
-    private MessageHolder messageHolder;
+	private Component createLabel(String labelId, PageParameters parameters) {
+		if (parameters != null) {
+			StringValue value = parameters.get("parameter1");
+			if (!Strings.isNullOrEmpty(value.toString())) {
+				return new Label(labelId, "Ich habe den Parameter '" + value.toString() + "'!!");
+			}
+		}
+		return Components.invisible(labelId);
+	}
 
-    public Hello(final PageParameters parameters) {
-        add(new Label("message", "Hello World from " + messageHolder.getMessage() + "!!"));
-    }
 }
