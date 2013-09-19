@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.dennishoersch.web.wicket;
 
-/**
- * @author hoersch
- * 
- */
-public class MessageHolder {
+public interface MessageHolder {
 
-    private final String _message;
+	public abstract String getMessage();
 
-    public MessageHolder(String message) {
-        _message = message;
-    }
-
-    public String getMessage() {
-        return _message;
-    }
 }
